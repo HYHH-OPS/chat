@@ -2,6 +2,10 @@
 
 本项目是一个 **支持腾讯视频免费爬取 + B站公开数据采集** 的双平台视频元数据采集爬虫框架，具有高稳定性、强抗封锁、可扩展性强等特点。
 
+> ⚠️ 说明：演示环境无法访问外网，所以当前实现使用 **离线模拟数据** 来展示
+> 爬虫的接口和存储流程。更换成真实网络请求时，只需要将
+> `OfflineRequestModule` 替换为实际的 HTTP 客户端即可。
+
 ---
 
 ## 🚀 功能特性
@@ -70,7 +74,7 @@
 ## 📦 安装
 
 ```bash
-pip install -r requirements.txt
+python example.py
 ```
 
 ---
@@ -86,6 +90,9 @@ crawler = TencentVideoCrawler(output_format="json")
 videos = crawler.crawl(pages=2)
 
 print("共爬取:", len(videos))
+
+# 保存示例数据
+crawler.save(videos, "output/tencent_samples.json")
 ```
 
 ### ▶ B站爬取
@@ -95,8 +102,11 @@ from bilibili_crawler import BilibiliCrawler
 
 b = BilibiliCrawler()
 video = b.get_video_info("BV1xx411c7mD")
+search_results = b.search("爬虫")
 
 print(video)
+print(search_results)
+b.save_json(search_results, "output/bilibili_search.json")
 ```
 
 ---
@@ -154,3 +164,4 @@ MIT License
 ---
 
 如需解析更多视频网站（如爱奇艺/优酷/抖音），可联系我扩展模块。
+
